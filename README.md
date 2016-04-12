@@ -1,5 +1,5 @@
 # mysqli_manager
-Access MySQL database using MySQL , OOP PHP Class
+Access MySQL database using MySQLi , OOP PHP Class
 
 ## Examples
 
@@ -142,7 +142,7 @@ if( $db->delete('test', 'WHERE pid = 1') === TRUE) {
 }
 
 // db connect $db->conn()
-// query $db->query("SELECT * FROM mbt_pages WHERE pid=1")
+// query  $db->query("SELECT * FROM mbt_pages WHERE pid=1")
 
 // close 
 $db->close();
