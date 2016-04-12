@@ -21,14 +21,14 @@ class mysqli_manger {
     }
 
 	/* Get DB conn */
-	public function conn() {
+  public function conn() {
       $this->db_connect = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);
 		if ($this->db_connect->connect_error) {
 		     die("Failed connect to MySQL");
 		     return;
 		}
 	  return $this->db_connect;
-	}
+  }
    
    	/** 
     *  escape data
@@ -37,12 +37,12 @@ class mysqli_manger {
    	  return $this->db_connect->real_escape_string($data);
    }
     /* charset query */
-	protected function charset() {
-	    $this->db_connect->query("SET NAMES '$this->charset'");
+    protected function charset() {
+	$this->db_connect->query("SET NAMES '$this->charset'");
         $this->db_connect->query("SET CHARACTER SET $this->charset");
-	}
+    }
 
-	public function select($select, $from, $where = '') {
+   public function select($select, $from, $where = '') {
       $this->result = null;
       $this->charset();
 		if($this->select = $this->db_connect->query("SELECT {$select} FROM {$from} {$where}")) {
@@ -52,17 +52,18 @@ class mysqli_manger {
 		   unset($select, $from, $where);
 		}   
 	  return $this->result;	
-	}
+    }
 
-	public function loopselect($select, $from, $where = '') {
+   public function loopselect($select, $from, $where = '') {
 	    $this->result = null;
 	    $this->charset();
-        $this->result = $this->db_connect->query("SELECT {$select} FROM {$from} {$where}");
-   	    unset($select, $from, $where);
+            $this->result = $this->db_connect->query("SELECT {$select} FROM {$from} {$where}");
+   	   unset($select, $from, $where);
 	  return $this->result;	
-	}
+   	
+   }
 
-	public function insert($into, $array) {
+  public function insert($into, $array) {
         $return = FALSE;
         $data = array();
 		foreach ($array as $key => $value) {
@@ -75,10 +76,10 @@ class mysqli_manger {
 		  	unset($into, $array, $data);
 		  	$return = TRUE;
 		  }
-		return $return;  
-	}
+	return $return;  
+   }
 
-	public function multi_insert($into, $array) {
+    public function multi_insert($into, $array) {
         $ids = array();
         foreach($array as $val) {
 	          if(!is_array($val)) {
@@ -94,10 +95,10 @@ class mysqli_manger {
 		unset($into, $array, $ids);
 		if (empty(array_filter($this->insert_ids))) return FALSE; 
 		return TRUE; 		
-	}
+    }
 
-	public function update($table, $array, $where = '') {
-		$return = FALSE;
+  public function update($table, $array, $where = '') {
+	$return = FALSE;
         $data = array();
 		foreach ($array as $key => $value) {
 			$data[] = $this->escape($key)."='".$this->escape($value)."'";
@@ -108,17 +109,17 @@ class mysqli_manger {
 		  	unset($table, $array, $where, $data);
 		  	$return = TRUE;
 		  }
-		return $return;	   
-	}
+	return $return;	   
+   }
 
-	public function delete($from, $where = '') {
-		$return = FALSE;
-		 if ($this->delete = $this->db_connect->query("DELETE FROM {$from} {$where}")) {
+  public function delete($from, $where = '') {
+	$return = FALSE;
+	     if ($this->delete = $this->db_connect->query("DELETE FROM {$from} {$where}")) {
 		 	unset($from, $where);
 		 	$return = TRUE;
-		 }
+	     }
        return $return;
-	}
+  }
 
 	public function query($query) {
 		return $this->db_connect->query($query);
@@ -139,7 +140,7 @@ class mysqli_manger {
 	public function close() { 
 		$this->reset();
 		unset($this->db_connect, $this->select, $this->num_rows, $this->insert, $this->update, $this->delete, $this->insert_id, $this->charset, $this->insert_ids, $this->result);
-       $this->conn()->close();
+               $this->conn()->close();
 	}
 
 	private function __clone() { }
