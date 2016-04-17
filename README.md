@@ -63,23 +63,23 @@ if ( $row = $db->select('title, page', 'test', "WHERE pid=$id") {
 unset($row);
 
 // example : select for loop
-if ($data = $db->selectloop('pid, title, page', 'test', 'LIMIT 10') && $data->num_rows > 0) {
+$data = $db->selectloop('pid, title, page', 'test', 'LIMIT 10');
+if ($data->num_rows > 0) {
 
 // fetch_assoc() return data as array 
 // fetch_object() return data as object 
-
      while( $row = $data->fetch_assoc() ) {
        echo 'Pgae id ' . $row['pid'];
        echo 'Pgae title ' . $row['title'];
        echo 'Pgae content ' . $row['page'];
      }
-  $data->close();   
 } else {
   echo 'Not Found';
 }
+$data->close();
 
 // example insert 
-// $db->select(table Name, array )
+// $db->insert(table Name, array )
 
 $data = array(
      'title' => 'Example title insert',
@@ -94,7 +94,7 @@ $data = array(
  }
 
 
-// example Muli insert
+// example Multi insert
 
 $data = array(
      'insert1' => array(
