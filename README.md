@@ -23,6 +23,7 @@ ALTER TABLE `test`
   MODIFY `pid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 ```  
 
+###Config
 ```php
 <?php
 
