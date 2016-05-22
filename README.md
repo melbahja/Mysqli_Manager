@@ -5,37 +5,48 @@ Access MySQL database using MySQLi , OOP PHP Class
 
 ### example table 
 ```sql
---
--- example Table
---
-CREATE TABLE `test` (
-  `pid` int(11) NOT NULL,
-  `title` varchar(255) NOT NULL,
-  `page` varchar(500) NOT NULL
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+CREATE TABLE `example_table` (
+  `id` int(11) NOT NULL,
+  `title` varchar(100) CHARACTER SET utf8 NOT NULL,
+  `description` varchar(150) CHARACTER SET utf8 NOT NULL,
+  `text` text CHARACTER SET utf8 NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-INSERT INTO `test` (`pid`, `title`, `page`) VALUES
-(1, ' FAQ page title', 'Example Content');
 
-ALTER TABLE `test`
-  ADD PRIMARY KEY (`pid`);
-ALTER TABLE `test`
-  MODIFY `pid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+INSERT INTO `example_table` (`id`, `title`, `description`, `text`) VALUES
+(1, ' title', ' desc', ' text');
+
+ALTER TABLE `example_table`
+  ADD PRIMARY KEY (`id`);
+
+ALTER TABLE `example_table`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  
 ```  
 
 ###Config
 ```php
 <?php
 
-// config 
-define('DB_USERNAME', 'root');
-define('DB_PASSWORD', '');
-define('DB_NAME', 'test');
-define('DB_HOST', 'localhost');
+/**
+ * database config 
+ */
 
-require_once('mysqli_manager.php');
+define('DB_HOST', 'localhost'); //host
+define('DB_USER', 'root'); // db username
+define('DB_PASS', ''); // db password 
+define('DB_NAME', 'test'); // db name
 
-$db = new mysqli_manager();
+require_once('Mysqli_Manager.php');
+
+try {
+
+	$db = new Mysqli_Manager();
+
+} catch (Exception $err) {
+
+	exit($err->getMesage());
+}
 
 ```
 
@@ -43,9 +54,9 @@ $db = new mysqli_manager();
 ```php
 // $db->select(Column, table Name, WHERE(optional) ) 
 
-if ( $row = $db->select('title, page', 'test', 'LIMIT 1') { 
+if ( $row = $db->select('title, text', 'example_table', 'LIMIT 1')->fetch_assoc()) { 
     $title = $row['title'];
-    $page_text = $row['page'];
+    $page_text = $row['text'];
 }
 unset($row);
 
@@ -55,34 +66,18 @@ echo $page_text;
 //example 2
 $id = $db->escape($_GET['id']); // escape 
 
-if ( $row = $db->select('title, page', 'test', "WHERE pid=$id") { 
+if ( $row = $db->select('title, text', 'example_table', "WHERE id=$id") { 
 
-    if ($db->num_rows > 0) {
+    if ($row->num_rows > 0) {
+        $row = $row->fetch_assoc();
         $title = $row['title'];
-         $page_text = $row['page'];
+         $page_text = $row['text'];
     } else {
       echo 'Not Found';
     }
 
 }
 unset($row);
-```
-###SELECT data for loop 
-```php
-$data = $db->loopselect('pid, title, page', 'test', 'LIMIT 10');
-
-if ($data->num_rows > 0) {
-// fetch_assoc() return data as array 
-// fetch_object() return data as object 
-     while( $row = $data->fetch_assoc() ) {
-       echo 'Pgae id ' . $row['pid'];
-       echo 'Pgae title ' . $row['title'];
-       echo 'Pgae content ' . $row['page'];
-     }
-} else {
-  echo 'Not Found';
-}
-$data->close();// close() or free()
 ```
 
 ### INSERT data 
@@ -92,12 +87,12 @@ $data->close();// close() or free()
 
 $data = array(
      'title' => 'Example title insert',
-     'page' => 'Example data'
+     'text' => 'Example data'
 );
 
- if ($db->insert('test', $data) === TRUE) {
+ if ($db->insert('example_table', $data) === TRUE) {
     // TRUE
-    echo $db->insert_id();// get insert id
+    echo $db->insert_id;// get insert id
  } else {
    // FALSE
  }
@@ -108,23 +103,23 @@ $data = array(
 $data = array(
      'insert1' => array(
             'title' => 'Example title multi insert 1',
-            'page' => 'Example data multi 1'
+            'text' => 'Example data multi 1'
       ),
       
      'insert2' => array(
             'title' => 'Example title multi insert 2',
-            'page' => 'Example data 2'
+            'text' => 'Example data 2'
       ), 
       
      'insert3' => array(
          'title' => 'Example title multi insert 3',
-         'page' => 'Example data 3'
+         'text' => 'Example data 3'
       ), 
 );
 
- if ($db->multi_insert('test', $data) === TRUE) {
+ if ($db->multi_insert('example_table', $data) === TRUE) {
     // TRUE
-   var_dump($db->insert_ids()); // return array : get insert ids
+   var_dump($db->insert_ids); // return array : get insert ids
  } else {
    // FALSE
  }
@@ -134,10 +129,10 @@ $data = array(
 ```php
 $data = array(
      'title' => 'Updated title',
-     'page' => 'Updated data'
+     'text' => 'Updated data'
 );
 
-if ($db->update('test', $data, 'WHERE pid=1') === TRUE) {
+if ($db->update('example_table', $data, 'WHERE id=1') === TRUE) {
     // TRUE
  } else {
    // FALSE
@@ -148,17 +143,13 @@ if ($db->update('test', $data, 'WHERE pid=1') === TRUE) {
 ```php
 // $db->delete(FROM (table name), WHERE)
 
-if( $db->delete('test', 'WHERE pid = 1') === TRUE) {
+if( $db->delete('example_table', 'WHERE id = 1') === TRUE) {
  // deleted
 } else {
  // false
 }
 ```
 
-###Get DB Connection
-```php
-$DB_connect = $db->conn();
-```
 ###Simple query
 ```php
 $query = $db->query("SELECT * FROM mbt_pages WHERE pid=1");
