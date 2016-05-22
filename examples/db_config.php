@@ -17,5 +17,5 @@ try {
 
 } catch (Exception $err) {
 
-	exit($err->getMesage());
+	exit($err->getMessage());
 }
