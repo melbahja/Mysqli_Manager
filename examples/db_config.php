@@ -9,7 +9,7 @@ define('DB_USER', 'root'); // db username
 define('DB_PASS', ''); // db password 
 define('DB_NAME', 'test'); // db name
 
-require '../mysqli_manager.php';
+require '../Mysqli_Manager.php';
 
 try {
 
