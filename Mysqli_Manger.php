@@ -28,7 +28,7 @@ final class Mysqli_Manager extends \mysqli
 
 		if ($this->connect_error) {
 
-			throw new Exception(' Failed Connect to MySQL Database <br /> Error Info : ' . $this->connect_error);
+			throw new \Exception(' Failed Connect to MySQL Database <br /> Error Info : ' . $this->connect_error);
 		}
 
 		return $this->db_connect;
@@ -146,12 +146,11 @@ final class Mysqli_Manager extends \mysqli
 
         }
 
-        $this->insert_ids = $ids;
-		unset($into, $array, $ids);
-
-		if (!empty(array_filter($this->insert_ids))) {
-			return TRUE; 
-		}
+	        $this->insert_ids = $ids;
+	        unset($into, $array, $ids);
+	        $f = array_filter($this->insert_ids);
+	
+		if (!empty($f)) return TRUE; 
 
 	   return FALSE; 		
 	} 
@@ -243,13 +242,11 @@ final class Mysqli_Manager extends \mysqli
 		}
 
 		$tables->close();
+		$f = array_filter($status);
 
-	    if (!empty(array_filter($status))) {
-
-			return $status; 
-		}	
-
-      return FALSE;
+	    if (!empty($f)) return $status; 
+	
+           return FALSE;
 	} 
 
  }
