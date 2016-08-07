@@ -22,34 +22,53 @@ final class Mysqli_Manager extends \mysqli
     /**
      * __construct function 
      */
-	public function __construct() {
+    public function __construct() { }
+     
+    
+    /**
+     * Connect database
+     * @return [type] [description]
+     */
+    public function conn() 
+    {
+        $this->db_connect = parent::__construct(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 
-		$this->db_connect = @parent::__construct(DB_HOST, DB_USER, DB_PASS, DB_NAME);
-
-		if ($this->connect_error) {
-
-			throw new \Exception(' Failed Connect to MySQL Database <br /> Error Info : ' . $this->connect_error);
-		}
-
-		return $this->db_connect;
-	}
+        if ($this->connect_error) {
+            throw new \Exception(' Failed Connect to MySQL Database <br /> Error Info : ' . $this->connect_error);
+        }
+        
+        $this->set_charset('utf8');
+        //return $this->db_connect;         
+    }
 
     /**
      * [to_utf8 Convert String to utf8]
      * @param  string $String 
      * @return string
      */
-	protected function to_utf8($String) {
+     protected function to_utf8($String) {
 	    return mb_convert_encoding($String, 'UTF-8', mb_detect_encoding($String));     
-    }
+     }
     
     /**
      * [escape : escape data]
      * @param  string $data
      * @return string
      */
-	public function escape($data) {
-		return $this->real_escape_string($this->to_utf8($data));
+       public function escape($data, $type = 'str') {
+
+		$data = $this->to_utf8($data);
+
+		if( get_magic_quotes_gpc() ) {
+			$data = stripslashes($data);
+		}
+
+		if( $type = 'int' ) {
+
+			return (int) $this->real_escape_string($data);
+		}
+
+		return $this->real_escape_string($data);
 	}
 
     /**
