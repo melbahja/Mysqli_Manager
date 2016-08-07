@@ -42,6 +42,7 @@ require_once('Mysqli_Manager.php');
 try {
 
 	$db = new Mysqli_Manager();
+	$db->conn(); // connect DB
 
 } catch (Exception $err) {
 
