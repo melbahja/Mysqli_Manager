@@ -1,5 +1,5 @@
-# PHP MySQLi Manager
-Access MySQL database using MySQLi , OOP Class
+# PHP MySQLi Manager 
+Access MySQL database using MySQLi
 
 ## Examples
 
