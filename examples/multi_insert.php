@@ -2,6 +2,8 @@
 
 require 'db_config.php';
 
+/* Connect DB */
+$db->conn();
 
 $data = array(
 
