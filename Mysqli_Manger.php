@@ -94,6 +94,7 @@ final class Mysqli_Manager extends \mysqli
      */
     public function select_one($select, $from, $where = '', $fetch = 'assoc') 
     {
+    	
 	$fetch = 'fetch_' . $fetch;
 	$return = null;
 
@@ -218,8 +219,8 @@ final class Mysqli_Manager extends \mysqli
 		 	unset($from, $where);
 		 	$return = true;
 		 }
-
-               return $return;
+	
+	       return $return;
 	}	
 
     /**
