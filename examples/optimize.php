@@ -2,8 +2,10 @@
 
 require 'db_config.php';
 
+/* Connect DB */
+$db->conn();
 
-if ($db->optimize_table('help_keyword')) {
+if ($db->optimize_table('tableName')) {
 
 	// true
 
