@@ -6,7 +6,8 @@
 
 require 'db_config.php';
 
-
+/* Connect DB */
+$db->conn();
 
 // select one 
 // ex : $db->escape($_GET['id'])
