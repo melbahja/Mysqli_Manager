@@ -5,6 +5,10 @@
 require 'db_config.php';
 
 
+/* Connect DB */
+$db->conn();
+
+
 // insert 
 
 $data = array(
