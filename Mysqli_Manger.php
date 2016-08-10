@@ -64,7 +64,7 @@ final class Mysqli_Manager extends \mysqli
 			$data = stripslashes($data);
 		}
 
-		if( $type = 'int' ) {
+		if( $type === 'int' ) {
 
 			return (int) $this->real_escape_string($data);
 		}
